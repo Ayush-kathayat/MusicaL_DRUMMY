@@ -1,176 +1,75 @@
+// create an AudioContext object
+const audioContext = new AudioContext();
 
+// create initial oscillator with default frequency
+let oscillator = createOscillator();
 
-window.addEventListener('keydown', function(event) 
-{
-  if (/^\d$/.test(event.key) || event.key === "+"  || event.key === "-")
-  {
-    const butto = event.key;
+oscillator.connect(audioContext.destination);
 
-    switch (butto) {
+// helper function to add/remove classes
+function toggleClasses(selector) {
+  const element = document.querySelector(selector);
+  element.classList.toggle('shaker');
+  element.classList.toggle('shadowColor');
+}
 
-        case "0":  
-        const drum_0 = document.querySelector(".d_4");
-        drum_0.classList.add('shaker','shadowColor');
-        break;
-  
-  
-        case "1": 
-        const drum_1 = document.querySelector(".d_7");
-        drum_1.classList.add('shaker','shadowColor');
-        break;
-  
-        case "2": 
-        const drum_2 = document.querySelector(".d_1");
-        drum_2.classList.add('shaker','shadowColor');
-        break;
-  
-        case "3": 
-        const drum_3 = document.querySelector(".d_3");
-        drum_3.classList.add('shaker','shadowColor');
-        break;
-  
-        case "4":       
-        const drum_4 = document.querySelector(".d_2");
-        drum_4.classList.add('shaker','shadowColor');
-        break;
-  
-        case "5": 
-        const drum_5 = document.querySelector(".d_8");
-        drum_5.classList.add('shaker','shadowColor');
-        break;
-  
-        case "6": 
-        const drum_6 = document.querySelector(".d_11");
-        drum_6.classList.add('shaker','shadowColor');
-        break;
-  
-        case "7": 
-        const drum_7 = document.querySelector(".d_6");
-        drum_7.classList.add('shaker','shadowColor');
-        break;
-  
-        case "8": 
-        const drum_8 = document.querySelector(".d_9");
-        drum_8.classList.add('shaker','shadowColor');
-        break;
-  
-        case "9": 
-        const drum_9 = document.querySelector(".d_12");
-        drum_9.classList.add('shaker','shadowColor');
-        break;
+// key-value pairs for buttons
+const buttons = {
+  "0": { selector: ".d_4", frequency: 440 },
+  "1": { selector: ".d_7", frequency: 523.25 },
+  "2": { selector: ".d_1", frequency: 587.33 },
+  "3": { selector: ".d_3", frequency: 659.25 },
+  "4": { selector: ".d_2", frequency: 698.46 },
+  "5": { selector: ".d_8", frequency: 783.99 },
+  "6": { selector: ".d_11", frequency: 880 },
+  "7": { selector: ".d_6", frequency: 987.77 },
+  "8": { selector: ".d_9", frequency: 1046.5 },
+  "9": { selector: ".d_12", frequency: 1174.7 },
+  "+": { selector: ".d_10", frequency: 1318.5 },
+  "-": { selector: ".d_5", frequency: 1396.9 }
+};
 
-        case "+": 
-        const drum_10 = document.querySelector(".d_10");
-        drum_10.classList.add('shaker','shadowColor');
-        break;
+let timerId = null;
 
-        case "-": 
-        const drum_11 = document.querySelector(".d_5");
-        drum_11.classList.add('shaker','shadowColor');
-        break;
+// add event listeners to buttons
+window.addEventListener('keydown', function(event) {
+  const key = event.key;
 
-        default : break;
-    };
-  }
-   else
-  {
+  if (/^\d$/.test(key) || key === "+" || key === "-") {
+
+    toggleClasses(buttons[key].selector);
+
+    oscillator.stop();
+
+    // create a new oscillator
+    oscillator = createOscillator(buttons[key].frequency);
+
+    // connect the new oscillator to the audio output
+    oscillator.connect(audioContext.destination);
+
+    // start the new oscillator
+    oscillator.start();
+
+  } else {
     alert("PLEASE ENTER A NUMBER BETWEEN 0-9 ONLY");
-    const drums = document.querySelectorAll(".drum");
-
-    for(let i = 0 ; i < drums.length ; i++)
-    {
-        drums[i].classList.remove('shaker','shadowColor');
-    }
   }
-
 });
 
+window.addEventListener('keyup', function(event) {
+  const key = event.key;
 
+  if (/^\d$/.test(key) || key === "+" || key === "-") {
+    toggleClasses(buttons[key].selector);
 
-
-window.addEventListener('keyup', function(event) 
-{
-  if (/^\d$/.test(event.key) || event.key === "+"  || event.key === "-")
-  {
-    const butto = event.key;
-
-    switch (butto) {
-
-        case "0":  
-        const drum_0 = document.querySelector(".d_4");
-        drum_0.classList.remove('shaker','shadowColor');
-        break;
-  
-  
-        case "1": 
-        const drum_1 = document.querySelector(".d_7");
-        drum_1.classList.remove('shaker','shadowColor');
-        break;
-  
-        case "2": 
-        const drum_2 = document.querySelector(".d_1");
-        drum_2.classList.remove('shaker','shadowColor');
-        break;
-  
-        case "3": 
-        const drum_3 = document.querySelector(".d_3");
-        drum_3.classList.remove('shaker','shadowColor');
-        break;
-  
-        case "4":       
-        const drum_4 = document.querySelector(".d_2");
-        drum_4.classList.remove('shaker','shadowColor');
-        break;
-  
-        case "5": 
-        const drum_5 = document.querySelector(".d_8");
-        drum_5.classList.remove('shaker','shadowColor');
-        break;
-  
-        case "6": 
-        const drum_6 = document.querySelector(".d_11");
-        drum_6.classList.remove('shaker','shadowColor');
-        break;
-  
-        case "7": 
-        const drum_7 = document.querySelector(".d_6");
-        drum_7.classList.remove('shaker','shadowColor');
-        break;
-  
-        case "8": 
-        const drum_8 = document.querySelector(".d_9");
-        drum_8.classList.remove('shaker','shadowColor');
-        break;
-  
-        case "9": 
-        const drum_9 = document.querySelector(".d_12");
-        drum_9.classList.remove('shaker','shadowColor');
-        break;
-
-        case "+": 
-        const drum_10 = document.querySelector(".d_10");
-        drum_10.classList.remove('shaker','shadowColor');
-        break;
-
-        case "-": 
-        const drum_11 = document.querySelector(".d_5");
-        drum_11.classList.remove('shaker','shadowColor');
-        break;
-
-        default : break;
-    };
+    oscillator.stop();
   }
-   else
-  {
-    alert("PLEASE ENTER A NUMBER BETWEEN 0-9 ONLY");
-
-    const drums = document.querySelectorAll(".drum");
-
-    for(let i = 0 ; i < drums.length ; i++)
-    {
-        drums[i].classList.remove('shaker','shadowColor');
-    }
-
-  }
-
 });
+
+// helper function to create a new oscillator node with a specified frequency
+function createOscillator(frequency = 440) {
+  const oscillator = audioContext.createOscillator();
+  oscillator.type = "sine";
+  oscillator.frequency.value = frequency;
+  oscillator.start();
+  return oscillator;
+}
